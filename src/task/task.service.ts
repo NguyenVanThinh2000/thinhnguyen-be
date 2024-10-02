@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { TCreateTaskDto, TTaskListResponseDto, TUpdateTaskDto } from './task.dto'
 import { InjectModel } from '@nestjs/mongoose'
-import { Task } from '@/schemas'
 import { Model } from 'mongoose'
 import { ETaskStatus } from './enum'
+import { Task } from '../schemas'
 
 @Injectable()
 export class TaskService {

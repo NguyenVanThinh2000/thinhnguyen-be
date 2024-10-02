@@ -1,4 +1,4 @@
-import { TTaskStatus } from '@/task'
+import { TTaskStatus } from '../task/task.dto'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsOptional } from 'class-validator'
 

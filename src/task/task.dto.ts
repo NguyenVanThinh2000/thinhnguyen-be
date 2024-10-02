@@ -1,4 +1,4 @@
-import { Task } from '@/schemas'
+import { Task } from '../schemas'
 import { ETaskStatus } from './enum'
 
 export type TTaskDto = {

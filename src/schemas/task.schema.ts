@@ -1,4 +1,5 @@
-import { TTaskStatus } from '@/task'
+import { TTaskStatus } from '../task/task.dto'
+
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, HydratedDocument } from 'mongoose'
 

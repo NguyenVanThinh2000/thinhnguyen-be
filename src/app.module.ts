@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
-import { TaskModule } from '@/task'
-import { configurations, mongodbConfig } from '@/config'
 import { MongooseModule } from '@nestjs/mongoose'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
+import { TaskModule } from './task'
+import { configurations, mongodbConfig } from './config'
 
 @Module({
   imports: [
@@ -14,5 +16,7 @@ import { MongooseModule } from '@nestjs/mongoose'
     }),
     MongooseModule.forRootAsync(mongodbConfig),
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
