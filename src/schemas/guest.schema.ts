@@ -1,0 +1,34 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
+import { Document, HydratedDocument } from 'mongoose'
+
+@Schema({ toJSON: { virtuals: true }, toObject: { virtuals: true } })
+export class Guest extends Document {
+  @Prop({ required: true })
+  name: string
+
+  @Prop({ required: true })
+  nameInInvitation: string
+
+  @Prop({ default: null })
+  isAttending: boolean | null
+
+  @Prop()
+  wishes: string
+}
+
+export type GuestDocument = HydratedDocument<Guest>
+const GuestSchema = SchemaFactory.createForClass(Guest)
+
+GuestSchema.virtual('id').get(function () {
+  return this._id
+})
+
+GuestSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: (_doc, ret) => {
+    delete ret._id
+  },
+})
+
+export { GuestSchema }

@@ -5,10 +5,12 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { TaskModule } from './task'
 import { configurations, mongodbConfig } from './config'
+import { GuestModule } from './guest'
 
 @Module({
   imports: [
     TaskModule,
+    GuestModule,
     ConfigModule.forRoot({
       envFilePath: '.env.development.local',
       isGlobal: true,
