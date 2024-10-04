@@ -1,7 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Req } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CreateUserDto } from '../swagger/user'
 import { UserService } from './user.service'
+import { Request } from 'express'
 
 @ApiTags('users')
 @Controller('api/users')
@@ -21,5 +22,12 @@ export class UserController {
       username: newUser.username,
       name: newUser.name,
     }
+  }
+
+  @Get('/me')
+  @ApiOperation({ summary: 'Get me' })
+  @ApiResponse({ status: 200, description: 'Return me' })
+  async me(@Req() request: Request) {
+    return request.user
   }
 }

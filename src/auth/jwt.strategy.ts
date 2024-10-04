@@ -5,6 +5,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 import { UserService } from '../user'
 import { JwtPayload } from './jwt-payload.interface'
 import { ENVKEYS } from '../config/enum'
+import { Request } from 'express'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -13,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     configService: ConfigService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromExtractors([(request: Request) => request?.cookies?.jwt]),
       ignoreExpiration: false,
       secretOrKey: configService.get<string>(ENVKEYS.JWT_SECRET),
     })
