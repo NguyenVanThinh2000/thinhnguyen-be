@@ -17,6 +17,10 @@ export class GuestService {
     return this.guestModel.find().exec()
   }
 
+  findOne(id: string): Promise<Guest> {
+    return this.guestModel.findById(id).exec()
+  }
+
   update(id: string, task: UpdateGuestDto): Promise<Guest> {
     return this.guestModel.findByIdAndUpdate(id, task, { new: true }).exec()
   }

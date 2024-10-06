@@ -16,6 +16,13 @@ export class GuestController {
     return this.guestService.findAll()
   }
 
+  @Get('/:id')
+  @ApiOperation({ summary: 'Get a guest' })
+  @ApiResponse({ status: 200, description: 'Return a guest' })
+  async findOne(@Param('id') id: string): Promise<Guest> {
+    return this.guestService.findOne(id)
+  }
+
   @Post()
   @ApiOperation({ summary: 'Create a guest' })
   @ApiResponse({ status: 201, description: 'Create a guest' })

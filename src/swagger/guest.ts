@@ -8,7 +8,7 @@ export class CreateGuestDto {
 
   @ApiProperty({ description: 'name' })
   @IsNotEmpty()
-  nameInInvatation: string
+  nameInInvitation: string
 
   @ApiProperty({ description: 'isAttending' })
   @IsOptional()
