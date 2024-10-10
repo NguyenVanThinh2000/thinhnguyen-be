@@ -28,7 +28,7 @@ export class AuthController {
 
     // set the JWT in an HttpOnly cookie
     response.cookie('jwt', access_token, {
-      sameSite: 'None',
+      sameSite: 'none',
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 24 * 60 * 60 * 1000,
