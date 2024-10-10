@@ -24,3 +24,13 @@ export class UserLoginDto {
   @IsNotEmpty()
   password: string
 }
+
+export class ChangePasswordDto {
+  @ApiProperty({ description: 'old_password' })
+  @IsNotEmpty()
+  oldPassword: string
+
+  @ApiProperty({ description: 'new_password' })
+  @IsNotEmpty()
+  newPassword: string
+}

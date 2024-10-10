@@ -1,13 +1,23 @@
-import { Body, Controller, Post, Res } from '@nestjs/common'
+import { Body, Controller, HttpException, Patch, Post, Req, Res } from '@nestjs/common'
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
-import { UserLoginDto } from '../swagger/user'
-import { Response } from 'express'
+import { ChangePasswordDto, UserLoginDto } from '../swagger/user'
+import { Request, Response } from 'express'
+import { JwtService } from '@nestjs/jwt'
+import { ConfigService } from '@nestjs/config'
+import { UserService } from 'src/user'
+import { ENVKEYS } from 'src/config/enum'
+import * as bcrypt from 'bcryptjs'
 
 @ApiTags('auth')
 @Controller('api/auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post('login')
   @ApiOperation({ summary: 'Create a guest' })
@@ -24,6 +34,26 @@ export class AuthController {
     })
 
     return user
+  }
+
+  @Patch('change-password')
+  @ApiOperation({ summary: 'Change password' })
+  @ApiResponse({ status: 200, description: 'Change password' })
+  async changePassword(@Body() changePasswordDto: ChangePasswordDto, @Req() req: Request) {
+    const jwtAccessToken = req.cookies['jwt']
+    const { username } = this.jwtService.verify(jwtAccessToken, {
+      secret: this.configService.get(ENVKEYS.JWT_SECRET),
+    })
+
+    const user = await this.userService.findByUsername(username)
+    if (!user) throw new HttpException('User not found', 404)
+
+    const isMatch = await bcrypt.compare(changePasswordDto.oldPassword, user.password)
+    if (!isMatch) throw new HttpException('Invalid password', 400)
+
+    const hashedPassword = await bcrypt.hash(changePasswordDto.newPassword, 10)
+
+    return await this.userService.updatePassword(user.id, hashedPassword)
   }
 
   @Post('logout')

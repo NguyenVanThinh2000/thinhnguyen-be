@@ -5,7 +5,7 @@ import { HttpExceptionFilter } from './exception'
 import { TransformInterceptor } from './intercepter'
 import { corsOptions } from './config'
 import { JwtAuthGuard } from './guard'
-import cookieParser from 'cookie-parser'
+import * as cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)

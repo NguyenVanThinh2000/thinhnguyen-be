@@ -12,11 +12,11 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: 'Create a user' })
   @ApiResponse({ status: 201, description: 'Create a user' })
-  async create(@Body() guest: CreateUserDto) {
-    if (!guest.username || !guest.password || !guest.name) {
+  async create(@Body() user: CreateUserDto) {
+    if (!user.username || !user.password || !user.name) {
       throw new Error('Missing required fields')
     }
-    const newUser = await this.userService.create(guest)
+    const newUser = await this.userService.create(user)
     return {
       id: newUser.id,
       username: newUser.username,

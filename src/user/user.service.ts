@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, Injectable } from '@nestjs/common'
 import { CreateUserDto } from '../swagger/user'
 import { InjectModel } from '@nestjs/mongoose'
 import { User } from '../schemas/user.schema'
@@ -28,18 +28,20 @@ export class UserService {
     return newUser.save()
   }
 
+  async updatePassword(id: string, password: string): Promise<User> {
+    return this.userModel.findByIdAndUpdate(id, { password }).exec()
+  }
+
   async findByUsername(username: string): Promise<User> {
     return this.userModel.findOne({ username }).exec()
   }
 
   async valitateUser(username: string, password: string): Promise<User> {
     const user = await this.findByUsername(username)
-
     if (user) {
       const isMatch = await bcrypt.compare(password, user.password)
       if (isMatch) return user
-    }
-
-    return null
+      else throw new HttpException('Invalid password', 400)
+    } else throw new HttpException('User not found', 404)
   }
 }

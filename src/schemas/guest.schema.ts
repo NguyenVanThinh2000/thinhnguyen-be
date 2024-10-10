@@ -14,6 +14,12 @@ export class Guest extends Document {
 
   @Prop()
   wishes: string
+
+  @Prop({ required: true })
+  host: string
+
+  @Prop({ default: 'bạn' })
+  role: string
 }
 
 export type GuestDocument = HydratedDocument<Guest>

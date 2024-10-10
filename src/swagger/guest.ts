@@ -6,17 +6,25 @@ export class CreateGuestDto {
   @IsNotEmpty()
   name: string
 
-  @ApiProperty({ description: 'name' })
+  @ApiProperty({ description: 'name in invitation' })
   @IsNotEmpty()
   nameInInvitation: string
 
-  @ApiProperty({ description: 'isAttending' })
+  @ApiProperty({ description: 'isAttend' })
   @IsOptional()
   isAttending: boolean | null
 
   @ApiProperty({ description: 'wishes' })
   @IsOptional()
   wishes: string
+
+  @ApiProperty({ description: 'host of the party' })
+  @IsNotEmpty()
+  host: string
+
+  @ApiProperty({ description: 'bạn | thầy | cô | anh | chị' })
+  @IsNotEmpty()
+  role: string
 }
 
 export class UpdateGuestDto {
@@ -35,4 +43,12 @@ export class UpdateGuestDto {
   @ApiProperty({ description: 'wishes' })
   @IsOptional()
   wishes: string
+
+  @ApiProperty({ description: 'host of the party' })
+  @IsOptional()
+  host: string
+
+  @ApiProperty({ description: 'bạn | thầy | cô | anh | chị' })
+  @IsOptional()
+  role: string
 }
