@@ -11,6 +11,9 @@ export class User extends Document {
 
   @Prop({ required: true })
   password: string
+
+  @Prop({ default: '' })
+  accessToken: string
 }
 
 export type UserDocument = HydratedDocument<User>
@@ -25,6 +28,8 @@ UserSchema.set('toJSON', {
   versionKey: false,
   transform: (_doc, ret) => {
     delete ret._id
+    delete ret.password
+    delete ret.accessToken
   },
 })
 

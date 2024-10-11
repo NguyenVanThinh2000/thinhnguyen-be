@@ -19,9 +19,24 @@ async function bootstrap() {
   app.useGlobalGuards(new JwtAuthGuard())
 
   // swagger configuration
-  const swaggerConfig = new DocumentBuilder().setTitle('Api').setVersion('0.1').build()
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Api')
+    .setVersion('0.1')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'jwt',
+    )
+    .build()
   const document = SwaggerModule.createDocument(app, swaggerConfig)
-  SwaggerModule.setup('api/docs', app, document)
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  })
 
   await app.listen(process.env.PORT || 3000)
 }

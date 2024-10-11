@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Document, HydratedDocument } from 'mongoose'
+import { THost } from 'src/guest/guest.dto'
 
 @Schema({ toJSON: { virtuals: true }, toObject: { virtuals: true } })
 export class Guest extends Document {
@@ -16,7 +17,7 @@ export class Guest extends Document {
   wishes: string
 
   @Prop({ required: true })
-  host: string
+  host: THost
 
   @Prop({ default: 'bạn' })
   role: string

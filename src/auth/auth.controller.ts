@@ -1,5 +1,5 @@
 import { Body, Controller, HttpException, Patch, Post, Req, Res } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { AuthService } from './auth.service'
 import { ChangePasswordDto, UserLoginDto } from '../swagger/user'
 import { Request, Response } from 'express'
@@ -22,21 +22,14 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: 'Create a guest' })
   @ApiResponse({ status: 201, description: 'Create a guest' })
-  async login(@Body() userLogin: UserLoginDto, @Res({ passthrough: true }) response: Response) {
+  async login(@Body() userLogin: UserLoginDto) {
     const user = await this.authService.validateUser(userLogin.username, userLogin.password)
     const { access_token } = await this.authService.login(user)
-
-    // set the JWT in an HttpOnly cookie
-    response.cookie('jwt', access_token, {
-      sameSite: 'none',
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000,
-    })
-
-    return user
+    await this.userService.saveAccessToken(user.id, access_token)
+    return { user, access_token }
   }
 
+  @ApiBearerAuth('jwt')
   @Patch('change-password')
   @ApiOperation({ summary: 'Change password' })
   @ApiResponse({ status: 200, description: 'Change password' })
@@ -57,11 +50,12 @@ export class AuthController {
     return await this.userService.updatePassword(user.id, hashedPassword)
   }
 
+  @ApiBearerAuth('jwt')
   @Post('logout')
   @ApiOperation({ summary: 'Logout' })
   @ApiResponse({ status: 200, description: 'Logout' })
   async logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('jwt')
+    await this.userService.removeAccessToken(response.locals.user.id)
     return { message: 'Logout successfully' }
   }
 }
