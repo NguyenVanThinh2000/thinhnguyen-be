@@ -44,4 +44,18 @@ export class UserService {
       else throw new HttpException('Invalid password', 400)
     } else throw new HttpException('User not found', 404)
   }
+
+  async saveAccessToken(id: string, accessToken: string): Promise<User> {
+    return this.userModel.findByIdAndUpdate(id, { accessToken }).exec()
+  }
+
+  async removeAccessToken(id: string): Promise<User> {
+    return this.userModel.findByIdAndUpdate(id, { accessToken: '' }).exec()
+  }
+
+  async findAccessToken(username: string): Promise<{ accessToken: string } | null> {
+    const user = await this.findByUsername(username)
+    if (!user) return null
+    return { accessToken: user.accessToken }
+  }
 }

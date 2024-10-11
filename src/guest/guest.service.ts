@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Guest } from '../schemas'
 import { CreateGuestDto, UpdateGuestDto } from '../swagger/guest'
+import { TGuestsQueryParams } from './guest.dto'
 
 @Injectable()
 export class GuestService {
@@ -13,8 +14,20 @@ export class GuestService {
     return createdGuest.save()
   }
 
-  findAll(): Promise<Guest[]> {
-    return this.guestModel.find().exec()
+  findAll(queryParams: TGuestsQueryParams): Promise<Guest[]> {
+    const { keyword, host } = queryParams
+    const query = {}
+    if (host) {
+      query['host'] = { $in: host }
+    }
+    if (keyword) {
+      query['$or'] = [
+        { name: { $regex: keyword, $options: 'i' } },
+        { nameInInvitation: { $regex: keyword, $options: 'i' } },
+        { wishes: { $regex: keyword, $options: 'i' } },
+      ]
+    }
+    return this.guestModel.find(query).exec()
   }
 
   findOne(id: string): Promise<Guest> {

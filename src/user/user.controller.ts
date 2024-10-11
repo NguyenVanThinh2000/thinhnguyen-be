@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common'
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 import { CreateUserDto } from '../swagger/user'
 import { UserService } from './user.service'
 import { Request } from 'express'
@@ -9,6 +9,7 @@ import { Request } from 'express'
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @ApiBearerAuth('jwt')
   @Post()
   @ApiOperation({ summary: 'Create a user' })
   @ApiResponse({ status: 201, description: 'Create a user' })
@@ -24,6 +25,7 @@ export class UserController {
     }
   }
 
+  @ApiBearerAuth('jwt')
   @Get('/me')
   @ApiOperation({ summary: 'Get me' })
   @ApiResponse({ status: 200, description: 'Return me' })
