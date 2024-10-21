@@ -21,6 +21,9 @@ export class Guest extends Document {
 
   @Prop({ default: 'bạn' })
   role: string
+
+  @Prop({ default: false })
+  isSent: string
 }
 
 export type GuestDocument = HydratedDocument<Guest>
@@ -35,6 +38,10 @@ GuestSchema.set('toJSON', {
   versionKey: false,
   transform: (_doc, ret) => {
     delete ret._id
+    return {
+      ...ret,
+      isSent: ret.isSent === 'true' ? true : false,
+    }
   },
 })
 

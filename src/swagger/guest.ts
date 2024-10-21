@@ -51,4 +51,8 @@ export class UpdateGuestDto {
   @ApiProperty({ description: 'bạn | thầy | cô | anh | chị' })
   @IsOptional()
   role: string
+
+  @ApiProperty({ description: 'isSent' })
+  @IsOptional()
+  isSent: boolean
 }
