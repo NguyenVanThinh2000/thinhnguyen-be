@@ -55,4 +55,8 @@ export class UpdateGuestDto {
   @ApiProperty({ description: 'isSent' })
   @IsOptional()
   isSent: boolean
+
+  @ApiProperty({ description: 'gift' })
+  @IsOptional()
+  gift: string | null
 }

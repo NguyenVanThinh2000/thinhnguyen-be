@@ -34,8 +34,12 @@ export class GuestService {
     return this.guestModel.findById(id).exec()
   }
 
-  update(id: string, task: UpdateGuestDto): Promise<Guest> {
-    return this.guestModel.findByIdAndUpdate(id, task, { new: true }).exec()
+  update(id: string, guest: UpdateGuestDto): Promise<Guest> {
+    const data = { ...guest }
+    if (guest.gift) {
+      data.gift = guest.gift === '0' ? null : guest.gift
+    }
+    return this.guestModel.findByIdAndUpdate(id, data, { new: true }).exec()
   }
 
   delete(id: string): Promise<Guest> {

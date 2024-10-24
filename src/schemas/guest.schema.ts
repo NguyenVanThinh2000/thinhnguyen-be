@@ -24,6 +24,9 @@ export class Guest extends Document {
 
   @Prop({ default: false })
   isSent: string
+
+  @Prop({ default: null })
+  gift: string | null
 }
 
 export type GuestDocument = HydratedDocument<Guest>
