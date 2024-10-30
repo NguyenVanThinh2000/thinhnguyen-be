@@ -14,7 +14,7 @@ export class GuestService {
     return createdGuest.save()
   }
 
-  findAll(queryParams: TGuestsQueryParams): Promise<Guest[]> {
+  async findAll(queryParams: TGuestsQueryParams): Promise<Guest[]> {
     const { keyword, host, location } = queryParams
     const query = {}
     if (host) {
@@ -27,9 +27,7 @@ export class GuestService {
         { wishes: { $regex: keyword, $options: 'i' } },
       ]
     }
-    if (location) {
-      query['location'] = location
-    }
+    query['location'] = location
     return this.guestModel.find(query).exec()
   }
 
