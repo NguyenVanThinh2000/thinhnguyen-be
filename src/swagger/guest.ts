@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsNotEmpty, IsOptional } from 'class-validator'
+import { TLocation } from 'src/guest/guest.dto'
 
 export class CreateGuestDto {
   @ApiProperty({ description: 'name' })
@@ -25,6 +26,10 @@ export class CreateGuestDto {
   @ApiProperty({ description: 'bạn | thầy | cô | anh | chị' })
   @IsNotEmpty()
   role: string
+
+  @ApiProperty({ description: 'saigon | undefined' })
+  @IsNotEmpty()
+  location: TLocation
 }
 
 export class UpdateGuestDto {
@@ -59,4 +64,8 @@ export class UpdateGuestDto {
   @ApiProperty({ description: 'gift' })
   @IsOptional()
   gift: string | null
+
+  @ApiProperty({ description: 'location of the party' })
+  @IsOptional()
+  location: TLocation
 }

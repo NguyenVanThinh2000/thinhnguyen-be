@@ -15,7 +15,7 @@ export class GuestService {
   }
 
   findAll(queryParams: TGuestsQueryParams): Promise<Guest[]> {
-    const { keyword, host } = queryParams
+    const { keyword, host, location } = queryParams
     const query = {}
     if (host) {
       query['host'] = { $in: host }
@@ -26,6 +26,9 @@ export class GuestService {
         { nameInInvitation: { $regex: keyword, $options: 'i' } },
         { wishes: { $regex: keyword, $options: 'i' } },
       ]
+    }
+    if (location) {
+      query['location'] = location
     }
     return this.guestModel.find(query).exec()
   }

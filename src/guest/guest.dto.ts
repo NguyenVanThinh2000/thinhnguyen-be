@@ -15,4 +15,7 @@ export type THost = 'thoan' | 'thinh'
 export type TGuestsQueryParams = {
   host: THost[]
   keyword: string
+  location: TLocation
 }
+
+export type TLocation = 'saigon'
